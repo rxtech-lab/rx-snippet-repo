@@ -3,6 +3,32 @@ description: |
   This schema describes the structure of config file for a repository.
 
 properties:
+  permissions:
+    type: array
+    description: |
+      List of permissions for the repository. You need to specify the permissions for each step.
+    items:
+      $ref: "#/definitions/permission"
+  lifecycle:
+    type: array
+    description: |
+      List of lifecycle events at the global level.
+      - The global setup will be executed first, followed by the step setup.
+      - The step teardown will be executed first, followed by the global teardown.
+    maxItems: 2
+    uniqueItems: true
+    items:
+      type: object
+      allOf:
+        - properties:
+            on:
+              type: string
+              oneOf:
+                - const: setup
+                  title: Run before all steps
+                - const: teardown
+                  title: Run after all steps
+        - $ref: "#/definitions/script"
   steps:
     type: array
     description: |
@@ -14,16 +40,30 @@ properties:
         - properties:
             lifecycle:
               type: array
+              maxItems: 2
+              uniqueItems: true
               description: |
                 List of lifecycle events for the step.
               items:
-                $ref: "#/definitions/lifecycle"
-      minItems: 1
-
-
+                type: object
+                allOf:
+                  - properties:
+                      on:
+                        type: string
+                        oneOf:
+                          - const: beforeStep
+                            title: Before Step
+                          - const: afterStep
+                            title: After Step
+                        description: |
+                          Event on which the step should be executed.
+                  - $ref: "#/definitions/script"
 definitions:
   step:
     type: object
+    required:
+      - id
+      - name
     properties:
       id:
         type: string
@@ -58,6 +98,8 @@ definitions:
               type: string
               description: |
                 Bash command
+          required:
+            - command
       - if:
           properties:
             type:
@@ -69,18 +111,67 @@ definitions:
               format: uri
               description: |
                   Path to the JavaScript file
+          required:
+            - file
 
-  lifecycle:
-    type: object
-    allOf:
-      - properties:
-          on:
-            type: string
-            oneOf:
-              - const: beforeStep
-                title: Before Step
-              - const: afterStep
-                title: After Step
-            description: |
-              Event on which the step should be executed.
-      - $ref: "#/definitions/script"
+  permission:
+    type: string
+    description: |
+      Permission for the step.
+    oneOf:
+      - const: readFile
+        title: Read File
+        description: |
+          Read a file from the repository.
+      - const: writeFile
+        title: Write File
+        description: |
+          Write a file to the repository.
+      - const: runCommand
+        title: Run Command
+        description: |
+          Run a command in the repository.
+      - const: runScript
+        title: Run Script
+        description: |
+          Run a script in the repository.
+      - const: deleteFile
+        title: Delete File
+        description: |
+          Delete a file from the repository.
+      - const: readDirectory
+        title: Read Directory
+        description: |
+          Read a directory from the repository.
+      - const: writeDirectory
+        title: Write Directory
+        description: |
+          Write a directory to the repository.
+      - const: deleteDirectory
+        title: Delete Directory
+        description: |
+          Delete a directory from the repository.
+      - const: readEnvironmentVariable
+        title: Read Environment Variable
+        description: |
+          Read an environment variable
+      - const: writeEnvironmentVariable
+        title: Write Environment Variable
+        description: |
+          Write an environment variable
+      - const: readSecret
+        title: Read Secret
+        description: |
+          Read a secret from the repository.
+      - const: writeSecret
+        title: Write Secret
+        description: |
+          Write a secret to the repository.
+      - const: readVariable
+        title: Read Variable
+        description: |
+          Read a variable from the step
+      - const: writeVariable
+        title: Write Variable
+        description: |
+          Write a variable to the step.
