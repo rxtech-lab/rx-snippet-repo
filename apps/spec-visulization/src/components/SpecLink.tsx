@@ -14,16 +14,7 @@ interface SpecLinkProps {
  */
 export function SpecLink({ href, title }: SpecLinkProps) {
   return (
-    <Link
-      href={href}
-      className="group block"
-      onClick={(e) => {
-        e.preventDefault();
-        document.startViewTransition(() => {
-          window.location.href = href;
-        });
-      }}
-    >
+    <Link href={href} className="group block">
       <div className="border-l-2 border-transparent pl-4 transition-all duration-200 hover:border-neutral-900 flex flex-row justify-between items-center">
         <h2
           className="text-lg text-neutral-900 mb-2"
