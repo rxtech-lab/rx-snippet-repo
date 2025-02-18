@@ -8,7 +8,7 @@ interface ClientPageProps {
   fileContent: { [key: string]: any };
 }
 
-export default function ClientPage({ title, fileContent }: ClientPageProps) {
+export default function ClientPage({ fileContent }: ClientPageProps) {
   return (
     <div
       className="min-h-screen bg-white px-4 py-16 sm:px-6 lg:px-8"
@@ -19,12 +19,6 @@ export default function ClientPage({ title, fileContent }: ClientPageProps) {
           <Link
             href="/"
             className="inline-block mb-4 text-neutral-600 hover:text-neutral-900"
-            onClick={(e) => {
-              e.preventDefault();
-              document.startViewTransition(() => {
-                window.location.href = "/";
-              });
-            }}
           >
             ← Back to Specs
           </Link>
