@@ -1,0 +1,86 @@
+title: Repository schema
+description: |
+  This schema describes the structure of config file for a repository.
+
+properties:
+  steps:
+    type: array
+    description: |
+      List of steps to be executed in the repository. The order of the steps matters.
+    items:
+      allOf:
+        - $ref: "#/definitions/step"
+        - $ref: "#/definitions/script"
+        - properties:
+            lifecycle:
+              type: array
+              description: |
+                List of lifecycle events for the step.
+              items:
+                $ref: "#/definitions/lifecycle"
+      minItems: 1
+
+
+definitions:
+  step:
+    type: object
+    properties:
+      id:
+        type: string
+        description: |
+          Unique identifier for the step. This is used to identify the step in the logs.
+      name:
+        type: string
+        description: |
+          Name of the step. This is used to identify the step in the logs.
+  script:
+    type: object
+    properties:
+      type:
+        description: Script type
+        type: string
+        default: bash
+        oneOf:
+          - const: bash
+            title: Bash script
+            description: Bash script
+          - const: javascript
+            title: JavaScript script
+            description: JavaScript script
+    allOf:
+      - if:
+          properties:
+            type:
+              const: bash
+        then:
+          properties:
+            command:
+              type: string
+              description: |
+                Bash command
+      - if:
+          properties:
+            type:
+              const: javascript
+        then:
+          properties:
+            file:
+              type: string
+              format: uri
+              description: |
+                  Path to the JavaScript file
+
+  lifecycle:
+    type: object
+    allOf:
+      - properties:
+          on:
+            type: string
+            oneOf:
+              - const: beforeStep
+                title: Before Step
+              - const: afterStep
+                title: After Step
+            description: |
+              Event on which the step should be executed.
+      - $ref: "#/definitions/script"
