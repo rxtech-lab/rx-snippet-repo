@@ -8,6 +8,7 @@ import { useState } from "react";
 import yaml from "yaml";
 import { Check, Copy } from "lucide-react";
 import JSONSchemaWidget from "@/components/JSONSchemaWidget";
+import { CustomObjectField } from "@/components/CustomObjectField";
 
 interface ClientPageProps {
   title: string;
@@ -46,6 +47,10 @@ export default function ClientPage({ spec, uiSchema }: ClientPageProps) {
 
   const [isCopied, setIsCopied] = useState(false);
 
+  const fields = {
+    ObjectField: CustomObjectField,
+  };
+
   return (
     <div
       className="bg-white px-4 sm:px-6 lg:px-8 pb-10"
@@ -68,39 +73,42 @@ export default function ClientPage({ spec, uiSchema }: ClientPageProps) {
               uiSchema={formUiSchema}
               widgets={widgets}
               onChange={handleChange}
+              fields={fields}
             />
           </div>
-          <div className="yaml-preview relative h-[400px] lg:h-[800px] border border-neutral-200 p-2 rounded-xl lg:sticky lg:top-10">
-            <Editor
-              height="100%"
-              defaultLanguage="yaml"
-              value={yamlString}
-              options={{
-                readOnly: true,
-                minimap: { enabled: false },
-                scrollBeyondLastLine: false,
-                wordWrap: "on",
-                lineNumbers: "on",
-                theme: "vs-light",
-              }}
-            />
-            <button
-              className="absolute top-2 right-2 bg-neutral-100 px-2 py-1 rounded-md hover:bg-neutral-200 active:bg-neutral-300 transition-colors"
-              onClick={() => {
-                navigator.clipboard.writeText(yamlString);
-                setIsCopied(true);
-                setTimeout(() => {
-                  setIsCopied(false);
-                }, 2000);
-              }}
-              aria-label={isCopied ? "Copied!" : "Copy to clipboard"}
-            >
-              {isCopied ? (
-                <Check className="w-4 h-4" />
-              ) : (
-                <Copy className="w-4 h-4" />
-              )}
-            </button>
+          <div className="yaml-preview h-[400px] lg:h-[800px] border border-neutral-200 rounded-xl lg:sticky lg:top-10">
+            <div className="relative h-full p-2">
+              <Editor
+                height="100%"
+                defaultLanguage="yaml"
+                value={yamlString}
+                options={{
+                  readOnly: true,
+                  minimap: { enabled: false },
+                  scrollBeyondLastLine: false,
+                  wordWrap: "on",
+                  lineNumbers: "on",
+                  theme: "vs-light",
+                }}
+              />
+              <button
+                className="absolute top-2 right-2 bg-neutral-100 px-2 py-1 rounded-md hover:bg-neutral-200 active:bg-neutral-300 transition-colors"
+                onClick={() => {
+                  navigator.clipboard.writeText(yamlString);
+                  setIsCopied(true);
+                  setTimeout(() => {
+                    setIsCopied(false);
+                  }, 2000);
+                }}
+                aria-label={isCopied ? "Copied!" : "Copy to clipboard"}
+              >
+                {isCopied ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -86,6 +86,7 @@ definitions:
           Name of the step. This is used to identify the step in the logs.
       form:
         type: object
+        title: Form
         description: |
             JSON Schema for the form. 
             Can be used to get value from the user by using {{ from.value.fieldName }} 
