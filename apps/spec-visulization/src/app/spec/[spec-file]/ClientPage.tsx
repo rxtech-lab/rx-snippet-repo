@@ -10,7 +10,8 @@ import { Check, Copy } from "lucide-react";
 
 interface ClientPageProps {
   title: string;
-  fileContent: { [key: string]: any };
+  spec: { [key: string]: any };
+  uiSchema?: { [key: string]: any };
 }
 
 /**
@@ -18,18 +19,16 @@ interface ClientPageProps {
  * @param {ClientPageProps} props - Component props containing file content
  * @returns {JSX.Element} Split view with form and YAML preview
  */
-export default function ClientPage({ fileContent }: ClientPageProps) {
+export default function ClientPage({ spec, uiSchema }: ClientPageProps) {
   const [formData, setFormData] = useState<any>({});
 
   const widgets = {
     PermissionsWidget,
   };
 
-  const uiSchema = {
+  const formUiSchema = {
     "ui:submitButtonOptions": { norender: true },
-    permissions: {
-      "ui:widget": "PermissionsWidget",
-    },
+    ...uiSchema,
   };
 
   /**
@@ -62,9 +61,9 @@ export default function ClientPage({ fileContent }: ClientPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="form-container">
             <Form
-              schema={fileContent}
+              schema={spec}
               validator={validator}
-              uiSchema={uiSchema}
+              uiSchema={formUiSchema}
               widgets={widgets}
               onChange={handleChange}
             />
