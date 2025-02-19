@@ -8,6 +8,10 @@ const specMap: { [key: string]: string } = {
     process.cwd(),
     "../../spec/repository/repository.spec.yaml"
   ),
+  compiler: path.join(
+    process.cwd(),
+    "../../spec/repository/compiler.spec.yaml"
+  ),
 };
 
 const ClientPage = dynamic(() => import("./ClientPage"), { ssr: !!false });

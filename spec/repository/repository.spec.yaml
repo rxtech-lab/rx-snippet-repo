@@ -61,9 +61,6 @@ properties:
 definitions:
   step:
     type: object
-    required:
-      - id
-      - name
     properties:
       id:
         type: string
@@ -108,7 +105,6 @@ definitions:
           properties:
             file:
               type: string
-              format: uri
               description: |
                   Path to the JavaScript file
           required:

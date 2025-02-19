@@ -1,0 +1,29 @@
+title: Compiler schema
+description: |
+  This schema describes the structure of the compiler.
+
+properties:
+  output:
+    type: string
+    default: ./dist
+    description: |
+      Path to the output directory
+  files:
+    type: array
+    description: |
+      List of files to be compiled.
+    items:
+      type: object
+      required:
+        - path
+      properties:
+        path:
+          type: string
+          description: |
+            Path to the file.
+        output:
+          type: string
+          description: |
+            Path to the output file. Optional, if not provided, the file will be compiled in the same directory.
+            Otherwise, the file will be compiled in the output directory.
+            
