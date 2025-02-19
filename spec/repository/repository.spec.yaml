@@ -3,8 +3,17 @@ description: |
   This schema describes the structure of config file for a repository.
 
 properties:
+  globalConfig:
+    type: object
+    title: Global configuration
+    description: |
+      Global configuration for the repository. Can be overridden by the step configuration.
+    allOf:
+      - $ref: "#/definitions/configuration"
+          
   permissions:
     type: array
+    title: Permissions
     description: |
       List of permissions for the repository. You need to specify the permissions for each step.
     items:
@@ -59,6 +68,11 @@ properties:
                           Event on which the step should be executed.
                   - $ref: "#/definitions/script"
 definitions:
+  configuration:
+    type: object
+    properties:
+      templatePath:
+        type: string
   step:
     type: object
     properties:
@@ -70,6 +84,13 @@ definitions:
         type: string
         description: |
           Name of the step. This is used to identify the step in the logs.
+      form:
+        type: object
+        description: |
+            JSON Schema for the form. 
+            Can be used to get value from the user by using {{ from.value.fieldName }} 
+            or {{ step.from.value.fieldName }} to access the value from other steps.
+              
       if:
         type: string
         description: |
@@ -96,6 +117,9 @@ definitions:
           - const: javascript
             title: JavaScript script
             description: JavaScript script
+          - const: template
+            title: Template files
+            description: Generate files from templates
     allOf:
       - if:
           properties:
@@ -121,6 +145,44 @@ definitions:
                   Path to the JavaScript file
           required:
             - file
+      - if:
+          properties:
+            type:
+              const: template
+        then:
+          properties:
+            files:
+              type: array
+              description: |
+                List of files to be generated.
+              items:
+                type: object
+                required:
+                  - file
+                  - output
+                properties:
+                  templateFolder:
+                    type: string
+                    description: Path to the template folder. Will use the global template path if not specified.
+                    example:
+                      - "templates"
+                  file:
+                    type: string
+                    description: |
+                      Path to the file. 
+                      Will use the global template path if not specified.
+                      Path will be relative to the template folder.
+                    example:
+                      - "README.md"
+                      - "LICENSE"
+                      - "/someFolder/README.md"
+                  output:
+                    type: string
+                    description: Output file path. Can use variables.
+                    example:
+                      - "README.md"
+                      - "LICENSE"
+                      - "{{ step.id }}.md"
 
   permission:
     type: string

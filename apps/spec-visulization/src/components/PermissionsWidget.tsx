@@ -16,6 +16,8 @@ const PermissionsWidget = (props: WidgetProps) => {
     description: option.description,
   }));
 
+  const title = schema.title;
+
   const handleChange = (permissionValue: string) => {
     const newValue = value.includes(permissionValue)
       ? value.filter((v: string) => v !== permissionValue)
@@ -24,23 +26,26 @@ const PermissionsWidget = (props: WidgetProps) => {
   };
 
   return (
-    <div className="flex-col gap-2 grid grid-cols-2">
-      {options.map((option: any) => (
-        <TooltipHost
-          key={option.value}
-          content={option.description}
-          // Delay showing the tooltip for a better UX
-          calloutProps={{ gapSpace: 0 }}
-        >
-          <div className="inline-block">
-            <Checkbox
-              label={option.label}
-              checked={value.includes(option.value)}
-              onChange={() => handleChange(option.value)}
-            />
-          </div>
-        </TooltipHost>
-      ))}
+    <div className="flex flex-col gap-2">
+      <h1 className="text-lg font-bold">{title}</h1>
+      <div className="flex-col gap-2 grid grid-cols-2">
+        {options.map((option: any) => (
+          <TooltipHost
+            key={option.value}
+            content={option.description}
+            // Delay showing the tooltip for a better UX
+            calloutProps={{ gapSpace: 0 }}
+          >
+            <div className="inline-block">
+              <Checkbox
+                label={option.label}
+                checked={value.includes(option.value)}
+                onChange={() => handleChange(option.value)}
+              />
+            </div>
+          </TooltipHost>
+        ))}
+      </div>
     </div>
   );
 };

@@ -7,6 +7,7 @@ import Editor from "@monaco-editor/react";
 import { useState } from "react";
 import yaml from "yaml";
 import { Check, Copy } from "lucide-react";
+import JSONSchemaWidget from "@/components/JSONSchemaWidget";
 
 interface ClientPageProps {
   title: string;
@@ -24,6 +25,7 @@ export default function ClientPage({ spec, uiSchema }: ClientPageProps) {
 
   const widgets = {
     PermissionsWidget,
+    JSONSchemaWidget,
   };
 
   const formUiSchema = {
