@@ -70,6 +70,18 @@ definitions:
         type: string
         description: |
           Name of the step. This is used to identify the step in the logs.
+      if:
+        type: string
+        description: |
+          Condition to execute the step. If the condition is true, the step will be executed. If the condition is false, the step will be skipped.
+        examples:
+          - "true"
+          - "false"
+          - always()
+          - never()
+          - "{{ step.id == 'step1' }}"
+          - "{{ step.id == 'step1' && step.id == 'step2' }}"
+          - "{{ step.id == 'step1' || step.id == 'step2' }}"
   script:
     type: object
     properties:
