@@ -26,6 +26,7 @@ export default function ClientPage({ fileContent }: ClientPageProps) {
   };
 
   const uiSchema = {
+    "ui:submitButtonOptions": { norender: true },
     permissions: {
       "ui:widget": "PermissionsWidget",
     },
@@ -50,7 +51,7 @@ export default function ClientPage({ fileContent }: ClientPageProps) {
       style={{ viewTransitionName: "page" }}
     >
       <div className="mx-auto max-w-7xl">
-        <header className="mb-16 border-b border-neutral-200 mt-10">
+        <header className="mb-8 lg:mb-16 border-b border-neutral-200 mt-6 lg:mt-10">
           <Link
             href="/"
             className="inline-block mb-4 text-neutral-600 hover:text-neutral-900"
@@ -58,7 +59,7 @@ export default function ClientPage({ fileContent }: ClientPageProps) {
             ← Back to Specs
           </Link>
         </header>
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="form-container">
             <Form
               schema={fileContent}
@@ -68,7 +69,7 @@ export default function ClientPage({ fileContent }: ClientPageProps) {
               onChange={handleChange}
             />
           </div>
-          <div className="yaml-preview h-[800px] border border-neutral-200 p-2 rounded-xl sticky top-10">
+          <div className="yaml-preview relative h-[400px] lg:h-[800px] border border-neutral-200 p-2 rounded-xl lg:sticky lg:top-10">
             <Editor
               height="100%"
               defaultLanguage="yaml"
@@ -91,6 +92,7 @@ export default function ClientPage({ fileContent }: ClientPageProps) {
                   setIsCopied(false);
                 }, 2000);
               }}
+              aria-label={isCopied ? "Copied!" : "Copy to clipboard"}
             >
               {isCopied ? (
                 <Check className="w-4 h-4" />

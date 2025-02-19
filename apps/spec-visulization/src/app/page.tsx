@@ -20,6 +20,7 @@ export default function Home() {
         {/* Spec List */}
         <nav className="space-y-8">
           <SpecLink href="/spec/repository" title="Repository Spec" />
+          <SpecLink href="/spec/compiler" title="Compiler Spec" />
         </nav>
       </div>
     </div>
