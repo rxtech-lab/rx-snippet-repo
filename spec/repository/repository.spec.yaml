@@ -2,7 +2,23 @@ title: Repository schema
 description: |
   This schema describes the structure of config file for a repository.
 
+required:
+  - name
 properties:
+  name:
+    type: string
+    description: |
+      Name of the repository.
+    examples:
+      - "my-repository"
+      - "my-repository-2"
+  description:
+    type: string
+    description: |
+      Description of the repository.
+    examples:
+      - "This is a repository for my project."
+      - "This is a repository for my project 2."
   globalConfig:
     type: object
     title: Global configuration
