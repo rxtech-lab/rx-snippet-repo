@@ -1,8 +1,18 @@
 permissions:
   "ui:widget": "PermissionsWidget"
+form:
+  "ui:widget": JSONSchemaWidget
+  "ui:options":
+    schema: "https://json-schema.org/draft-07/schema#"
+environment:
+  "ui:widget": KeyValuePairField
 steps:
   items:
-      form:
-        "ui:widget": JSONSchemaWidget
-        "ui:options":
-          schema: "https://json-schema.org/draft-07/schema#"
+    environment:
+      "ui:widget": KeyValuePairField
+    form:
+      "ui:widget": JSONSchemaWidget
+      "ui:options":
+        schema: "https://json-schema.org/draft-07/schema#"
+    with:
+      "ui:widget": KeyValuePairField

@@ -1,6 +1,5 @@
-import { useCallback } from "react";
-import { ErrorSchema, FieldProps, getUiOptions } from "@rjsf/utils";
 import { getDefaultRegistry } from "@rjsf/core";
+import { FieldProps } from "@rjsf/utils";
 
 const {
   fields: { ObjectField },
