@@ -10,7 +10,7 @@ import { Check, Copy, FileDown } from "lucide-react";
 import JSONSchemaWidget from "@/components/JSONSchemaWidget";
 import { CustomObjectField } from "@/components/CustomObjectField";
 import { useParams } from "next/navigation";
-
+import KeyValuePairField from "@/components/KeyValuePairField";
 interface ClientPageProps {
   title: string;
   spec: { [key: string]: any };
@@ -31,6 +31,7 @@ export default function ClientPage({ spec, uiSchema }: ClientPageProps) {
   const widgets = {
     PermissionsWidget,
     JSONSchemaWidget,
+    KeyValuePairField,
   };
 
   const formUiSchema = {

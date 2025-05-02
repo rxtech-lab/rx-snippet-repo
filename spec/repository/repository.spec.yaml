@@ -10,7 +10,17 @@ properties:
       Global configuration for the repository. Can be overridden by the step configuration.
     allOf:
       - $ref: "#/definitions/configuration"
-          
+  environment:
+    type: object
+    title: Environment variables
+    description: |
+      Environment variables for the repository. Can be overridden by the step environment variables.
+  form:
+    type: object
+    title: Form
+    description: |
+      Global form for the repository. Can be used to get value from the user by using {{ from.value.fieldName }}
+
   permissions:
     type: array
     title: Permissions
@@ -88,10 +98,10 @@ definitions:
         type: object
         title: Form
         description: |
-            JSON Schema for the form. 
-            Can be used to get value from the user by using {{ from.value.fieldName }} 
-            or {{ step.from.value.fieldName }} to access the value from other steps.
-              
+          JSON Schema for the form. 
+          Can be used to get value from the user by using {{ from.value.fieldName }} 
+          or {{ step.from.value.fieldName }} to access the value from other steps.
+
       if:
         type: string
         description: |
@@ -121,6 +131,18 @@ definitions:
           - const: template
             title: Template files
             description: Generate files from templates
+          - const: uses
+            title: GitHub Repository
+            description: Use a GitHub repository as a step. The targeted repository should contains a `action.yaml` file. Similar to existing GitHub Actions.
+      environment:
+        title: Environment variables
+        description: |
+          Environment variables to be used in the step.
+        type: object
+        additionalProperties:
+          type: string
+          description: |
+            Environment variable
     allOf:
       - if:
           properties:
@@ -143,15 +165,46 @@ definitions:
             file:
               type: string
               description: |
-                  Path to the JavaScript file
+                Path to the JavaScript file
+            with:
+              type: object
+              title: With
+              description: |
+                Additional variables to be passed to the JavaScript file. You can access the variable in the script with {{ with.variableName }}
           required:
             - file
+      - if:
+          properties:
+            type:
+              const: uses
+        then:
+          properties:
+            repository:
+              type: string
+              examples:
+                - "owner/repository"
+                - "owner/repository@branch"
+                - "owner/repository@commit"
+              description: |
+                Path to the GitHub repository.
+            with:
+              type: object
+              title: With
+              description: |
+                Additional variables to be passed to the GitHub repository's action. You can access the variable in the script with {{ with.variableName }}
+          required:
+            - repository
       - if:
           properties:
             type:
               const: template
         then:
           properties:
+            with:
+              type: object
+              title: With
+              description: |
+                Additional variables to be passed to the template files. You can access the variable in the script with {{ with.variableName }}
             files:
               type: array
               description: |
