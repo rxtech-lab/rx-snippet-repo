@@ -11,6 +11,8 @@ import JSONSchemaWidget from "@/components/JSONSchemaWidget";
 import { CustomObjectField } from "@/components/CustomObjectField";
 import { useParams } from "next/navigation";
 import KeyValuePairField from "@/components/KeyValuePairField";
+import ToggleableFieldTemplate from "@/components/templates/ToggleableFieldTemplate";
+
 interface ClientPageProps {
   title: string;
   spec: { [key: string]: any };
@@ -32,6 +34,10 @@ export default function ClientPage({ spec, uiSchema }: ClientPageProps) {
     PermissionsWidget,
     JSONSchemaWidget,
     KeyValuePairField,
+  };
+
+  const templates = {
+    FieldTemplate: ToggleableFieldTemplate,
   };
 
   const formUiSchema = {
@@ -131,6 +137,7 @@ export default function ClientPage({ spec, uiSchema }: ClientPageProps) {
               validator={validator}
               uiSchema={formUiSchema}
               widgets={widgets}
+              templates={templates}
               onChange={handleChange}
               fields={fields}
             />
