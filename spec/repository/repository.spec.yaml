@@ -4,6 +4,7 @@ description: |
 
 required:
   - name
+  - jobs
 properties:
   name:
     type: string
@@ -64,41 +65,74 @@ properties:
                 - const: teardown
                   title: Run after all steps
         - $ref: "#/definitions/script"
-  steps:
+  jobs:
     type: array
+    title: Jobs
     description: |
-      List of steps to be executed in the repository. The order of the steps matters.
+      List of jobs to be executed in the repository.
     items:
-      allOf:
-        - $ref: "#/definitions/step"
-        - $ref: "#/definitions/script"
-        - properties:
-            lifecycle:
-              type: array
-              maxItems: 2
-              uniqueItems: true
-              description: |
-                List of lifecycle events for the step.
-              items:
-                type: object
-                allOf:
-                  - properties:
-                      on:
-                        type: string
-                        oneOf:
-                          - const: beforeStep
-                            title: Before Step
-                          - const: afterStep
-                            title: After Step
-                        description: |
-                          Event on which the step should be executed.
-                  - $ref: "#/definitions/script"
+      $ref: "#/definitions/job"
 definitions:
   configuration:
     type: object
     properties:
       templatePath:
         type: string
+  job:
+    type: object
+    required:
+      - name
+      - steps
+    properties:
+      name:
+        type: string
+        description: |
+          Name of the job.
+      environment:
+        type: object
+        title: Environment variables
+        description: |
+          Environment variables for the job. Can be overridden by the step environment variables.
+      form:
+        type: object
+        title: Form
+        description: |
+          Global form for the repository. Can be used to get value from the user by using {{ from.value.fieldName }}
+      needs:
+        type: array
+        description: |
+          List of jobs that need to be executed before the current job.
+        items:
+          type: string
+      steps:
+        type: array
+        description: |
+          List of steps to be executed in the repository. The order of the steps matters.
+        items:
+          allOf:
+            - $ref: "#/definitions/step"
+            - $ref: "#/definitions/script"
+            - properties:
+                lifecycle:
+                  type: array
+                  maxItems: 2
+                  uniqueItems: true
+                  description: |
+                    List of lifecycle events for the step.
+                  items:
+                    type: object
+                    allOf:
+                      - properties:
+                          on:
+                            type: string
+                            oneOf:
+                              - const: beforeStep
+                                title: Before Step
+                              - const: afterStep
+                                title: After Step
+                            description: |
+                              Event on which the step should be executed.
+                      - $ref: "#/definitions/script"
   step:
     type: object
     properties:
