@@ -98,6 +98,24 @@ definitions:
         title: Form
         description: |
           Global form for the repository. Can be used to get value from the user by using {{ from.value.fieldName }}
+      lifecycle:
+        type: array
+        description: |
+          List of lifecycle events for the job.
+        items:
+          type: object
+          allOf:
+            - properties:
+                on:
+                  type: string
+                  oneOf:
+                    - const: beforeJob
+                      title: Before Job
+                    - const: afterJob
+                      title: After Job
+                  description: |
+                    Event on which the job should be executed.
+            - $ref: "#/definitions/script"
       needs:
         type: array
         description: |
